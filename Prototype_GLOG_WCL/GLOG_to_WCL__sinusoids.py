@@ -7,7 +7,7 @@ import numpy as np
 
 # %%
 # read in the GLOG export
-geolog_test_file = r"to be created.csv"
+geolog_test_file = r"test_sinusoids.csv"
 
 glog_export = pd.read_csv(
     geolog_test_file,
@@ -105,16 +105,15 @@ wcl_dips.rename(columns={
     'APERTURE': 'Aperture',
     'AZI_RANGE': 'Visible Azimuth Ranges',
     'CATEGORY': 'Type',
-    'NOTES': 'Notes'
 }, inplace=True)
 
-# Add a row at the top of the dataframe with units [ft, ft, deg, deg, mm, deg, '', '']
-wcl_dips.loc[-1] = ['ft', 'ft', 'deg', 'deg', 'mm', 'deg', '', '']
+# Add a row at the top of the dataframe with units [m, m, deg, deg, mm, deg, '']
+wcl_dips.loc[-1] = ['m', 'm', 'deg', 'deg', 'mm', 'deg', '', '']
 wcl_dips.index = wcl_dips.index + 1  # shifting index
 wcl_dips = wcl_dips.sort_index()  # sorting by index
 
 # Export to a new CSV file called dips.csv
-wcl_dips.to_csv(r"0__converter__GLOG_to_WCL__dips_result.csv", index=False)
+wcl_dips.to_csv(r"GLOG_to_WCL__sinusoids_result.csv", index=False)
 
 wcl_dips.head()
 

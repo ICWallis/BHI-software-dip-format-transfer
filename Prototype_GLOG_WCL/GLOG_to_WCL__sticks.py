@@ -7,7 +7,7 @@ import numpy as np
 
 # %%
 # read in the GLOG export
-geolog_test_file = r"to be created.csv"
+geolog_test_file = r"test_sticks.csv"
 
 glog_export = pd.read_csv(
     geolog_test_file,
@@ -25,7 +25,6 @@ unit_check = pd.read_csv(
     )   
 
 unit_check.head(2)
-
 
 
 # %%
@@ -60,16 +59,15 @@ wcl_damage.rename(columns={
     'HEIGHT': 'Length',
     'AWIDTH': 'Opening',
     'CATEGORY': 'Type',
-    'NOTES': 'Notes'
 }, inplace=True)
 
-# Add a row at the top of the dataframe with units [ft, deg, deg, m, deg, '', '']
-wcl_damage.loc[-1] = ['ft', 'deg', 'deg', 'ft', 'deg', '', '']
+# Add a row at the top of the dataframe with units [m, deg, deg, m, deg, '']
+wcl_damage.loc[-1] = ['m', 'deg', 'deg', 'm', 'deg', '', '']
 wcl_damage.index = wcl_damage.index + 1  # shifting index
 wcl_damage = wcl_damage.sort_index()  # sorting by index
 
 # Export to a new CSV file called damage.csv
-wcl_damage.to_csv(r"0__converter__GLOG_to_WCL__damage_result.csv", index=False)
+wcl_damage.to_csv(r"GLOG_to_WCL__sticks_result.csv", index=False)
 
 wcl_damage.head()
 

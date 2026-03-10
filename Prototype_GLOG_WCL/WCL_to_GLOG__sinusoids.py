@@ -142,7 +142,7 @@ glog_dips.loc[-1] = ['ft', 'ft', 'deg', 'deg', 'deg', 'deg', '',  '', 'mm']
 glog_dips.index = glog_dips.index + 1  # shifting index
 glog_dips = glog_dips.sort_index()  # sorting by index
 
-glog_dips.to_csv(r"0__converter__WCL_to_GLOG__dips__result.csv", index=False)
+glog_dips.to_csv(r"WCL_to_GLOG__sinusoids__result.csv", index=False)
 
 # %%
 

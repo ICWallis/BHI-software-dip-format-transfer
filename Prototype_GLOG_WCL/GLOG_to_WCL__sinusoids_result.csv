@@ -1,0 +1,5 @@
+Feature Depth,Depth,Azimuth,Dip,Aperture,Visible Azimuth Ranges,Type,NOTES
+m,m,deg,deg,mm,deg,,
+807.4174854,807.4174854,16.9672,66.955,0, ,Fracture,
+808.7044832,808.7044832,213.936,26.1621,0, ,Bedding,
+809.1844433,809.0546223,23.9305,71.7439,0,99.0-309.0,Fracture,

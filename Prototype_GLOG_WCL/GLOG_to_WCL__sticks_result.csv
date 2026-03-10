@@ -1,0 +1,5 @@
+Depth,Azimuth,Tilt,Length,Opening,Type,NOTES
+m,deg,deg,m,deg,,
+808.0161202,135.969,1.24349,0.195527,0.0,DITF_Axial,
+808.5129737,150.165,0.0,0.305344,25.1775,Breakout,
+808.5732389,120.166,23.182,0.131244,0.0,DITF_En_Echelon,
