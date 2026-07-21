@@ -7,7 +7,8 @@ Dips    Working method
 WCL to GLOG Conversion
 
 Sticks  Working method. 
-        Just need to export CALA and this in tip azi calculation. Method current assumes single BH radius. 
+        Just need to export CALA and use this in the tip azi calculation because
+        the current method uses a single BH radius. 
 
 Dips    Working method
         WCL allows more than one visible azimuth range while GLOG does not.
