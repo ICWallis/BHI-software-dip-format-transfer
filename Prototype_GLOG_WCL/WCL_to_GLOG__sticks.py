@@ -116,6 +116,7 @@ def apply_crack_tip_calculation(row):
             'dz_m': np.nan,
         })
     else:
+        # Otherwise calculate the tip positions
         result = crack_tip_positions(
             radius_m=row['Radius'],
             z_center_m=row['Depth'],
@@ -132,8 +133,16 @@ def apply_crack_tip_calculation(row):
             'dz_m': result['dz_m'],
         })
 
-tip_positions_df = WCL.apply(apply_crack_tip_calculation, axis=1)
-WCL = pd.concat([WCL, tip_positions_df], axis=1)
+tip_columns = [
+    'high_z_tip_z_m',
+    'high_z_tip_theta_deg',
+    'low_z_tip_z_m',
+    'low_z_tip_theta_deg',
+    'd_theta_deg',
+    'dz_m',
+]
+
+WCL[tip_columns] = WCL.apply(apply_crack_tip_calculation, axis=1, result_type='expand')
 WCL.head()
 
 # %%

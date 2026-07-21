@@ -5,5 +5,5 @@ Dips - passed initial test
 
 WCL to GLOG
 
-Sticks - 
+Sticks - Need to export CALA and use this to find end points. Method current assumes single BH radius. 
 Dips - 
