@@ -16,3 +16,4 @@ Dips    Working method
             (A) Discard the narrowest range
             (B) Make a duplicate sinusoid with the second visible azimuth range in it (preferred)
         
+
