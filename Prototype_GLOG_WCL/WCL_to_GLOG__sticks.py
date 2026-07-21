@@ -20,22 +20,6 @@ WCL = pd.read_csv(
 
 WCL
 
-# %%
-# Process the WCL damage dataframe to match GLOG conventions
-
-# Set WCL.Tilt values of 0 to NaN
-WCL['Tilt'] = WCL['Tilt'].replace(0, np.nan)
-
-# Invert the sign of the Tilt column to match GLOG convention
-WCL['GLOG Tilt'] = WCL['Tilt'] * -1
-
-# Need to export the caliper log and calculate the radius at the depth of each feature. 
-WCL['Radius'] = 215.9 / 2 / 1000    # Placeholder value in meters 
-                                    # replace with actual radius
-                                    # It's CALA in mm / 2 for radius and converted to meters
-                                    # Method assumes meters, so will need to handle units
-
-WCL.head()
 
 # %%
 # Endpoint calculation 
@@ -103,7 +87,18 @@ def crack_tip_positions(
 
 
 # %%
-# Apply the crack tip calculation to each row in the dataframe
+# Process to GLOG format
+
+# Set WCL.Tilt values of 0 to NaN
+WCL['Tilt'] = WCL['Tilt'].replace(0, np.nan)
+
+# Need to export the caliper log and calculate the radius at the depth of each feature. 
+WCL['Radius'] = 215.9 / 2 / 1000    # Placeholder value in meters 
+                                    # replace with actual radius
+                                    # It's CALA in mm / 2 for radius and converted to meters
+                                    # Method assumes meters, so will need to handle units
+
+# Apply the tip azimuth calculation to each row in the dataframe
 def apply_crack_tip_calculation(row):
     # Test for cases where endpoints are not calculated (e.g., missing Tilt or Length)
     if pd.isna(row['Tilt']) or pd.isna(row['Length']):
@@ -143,17 +138,21 @@ tip_columns = [
 ]
 
 WCL[tip_columns] = WCL.apply(apply_crack_tip_calculation, axis=1, result_type='expand')
-WCL.head()
 
-# %%
-# drop the Tilt column
-WCL.drop(columns=['Tilt'], inplace=True)
+# Make a new tilt column for GLOG convention (opposite sign of WCL tilt)
+WCL['GLOG Tilt'] = WCL['Tilt'] * -1
 
-# # Replace NAN values with -999.25
+# Make 0 values in WCL.Opening column NaN
+WCL['Opening'] = WCL['Opening'].replace(0, np.nan)
+
+# Replace NAN values with -999.25
 WCL.fillna(-999.25, inplace=True)
+
 WCL
 
 # %%
+# Make the GLOG dataframe and export to CSV
+
 WCL.rename(columns={
     'Depth': 'DEPTH', 
     'Azimuth': 'AZIMUTH', 
@@ -166,9 +165,8 @@ WCL.rename(columns={
     'Notes': 'NOTES',
 }, inplace=True)
 
-# Make a new dataframe that only contains the columns that were renamed above
 GLOG = WCL[[
-    'DEPTH', 
+    'DEPTH',
     'AZIMUTH', 
     'AZI_END',
     'AZI_START',
@@ -179,27 +177,15 @@ GLOG = WCL[[
     'NOTES',
 ]].copy()
 
+GLOG.loc[-1] = ['m', 'deg', 'deg', 'deg', 'deg', 'm', 'deg', '', '',] # units row
 
-
-GLOG.columns
-
-
-# %%
-# Add a row at the top of the dataframe with units for each column, then export to CSV
-GLOG.loc[-1] = ['m', 'deg', 'deg', 'deg', 'deg', 'm', 'deg', '', '',]
 GLOG.index = GLOG.index + 1  # shifting index
+
 GLOG = GLOG.sort_index()  # sorting by index
 
 GLOG.to_csv(r"WCL_to_GLOG__sticks__result.csv", index=False)
+
 GLOG
 
 # %%
 
-
-# %%
-
-
-# %%
-
-
-# %%

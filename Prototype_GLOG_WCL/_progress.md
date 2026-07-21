@@ -5,5 +5,5 @@ Dips - passed initial test
 
 WCL to GLOG
 
-Sticks - Need to export CALA and use this to find end points. Method current assumes single BH radius. 
+Sticks - WOrking method. Just need to export CALA and this in tip azi calculation. Method current assumes single BH radius. 
 Dips - 
