@@ -10,31 +10,32 @@ import math
 # %%
 # Import the WCL data and drop the unit row
 
-damage_filename = r"0__converter__GLOG_to_WCL__damage_result.csv"
-wcl_damage = pd.read_csv(
+damage_filename = r"GLOG_to_WCL__sticks_result.csv"
+
+WCL = pd.read_csv(
     damage_filename,
     na_values=['', ' ', '-999.25'],
     skiprows=[1],
     )
 
-wcl_damage
+WCL
 
 # %%
 # Process the WCL damage dataframe to match GLOG conventions
 
-# if the Tilt value is not 0, then flip the value. Otherwise, set it to NaN
-wcl_damage['Tilt'] = wcl_damage['Tilt'].replace(0, np.nan)
-wcl_damage['GLOG Tilt'] = wcl_damage['Tilt'] * -1
+# Set WCL.Tilt values of 0 to NaN
+WCL['Tilt'] = WCL['Tilt'].replace(0, np.nan)
 
-# %%
-# Need to export the caliper log and caluclate the radius at the depth of each feature. 
-# For now I have assmed a constant radius of ____. 
+# Invert the sign of the Tilt column to match GLOG convention
+WCL['GLOG Tilt'] = WCL['Tilt'] * -1
 
-wcl_damage['Radius'] = 215.9 / 2 / 1000     # Placeholder value in meters, 
-                                            # replace with actual radius
-                                            # CALA / 2 converted to meters
+# Need to export the caliper log and calculate the radius at the depth of each feature. 
+WCL['Radius'] = 215.9 / 2 / 1000    # Placeholder value in meters 
+                                    # replace with actual radius
+                                    # It's CALA in mm / 2 for radius and converted to meters
+                                    # Method assumes meters, so will need to handle units
 
-wcl_damage.head()
+WCL.head()
 
 # %%
 # Endpoint calculation 
@@ -102,8 +103,9 @@ def crack_tip_positions(
 
 
 # %%
-# Apply the crack tip calculation to each row in the dataframe, using the Radius column for the radius_m input.
+# Apply the crack tip calculation to each row in the dataframe
 def apply_crack_tip_calculation(row):
+    # Test for cases where endpoints are not calculated (e.g., missing Tilt or Length)
     if pd.isna(row['Tilt']) or pd.isna(row['Length']):
         return pd.Series({
             'high_z_tip_z_m': np.nan,
@@ -130,18 +132,20 @@ def apply_crack_tip_calculation(row):
             'dz_m': result['dz_m'],
         })
 
-tip_positions_df = wcl_damage.apply(apply_crack_tip_calculation, axis=1)
-wcl_damage = pd.concat([wcl_damage, tip_positions_df], axis=1)
-wcl_damage.head()
+tip_positions_df = WCL.apply(apply_crack_tip_calculation, axis=1)
+WCL = pd.concat([WCL, tip_positions_df], axis=1)
+WCL.head()
 
 # %%
 # drop the Tilt column
-wcl_damage.drop(columns=['Tilt'], inplace=True)
-wcl_damage
+WCL.drop(columns=['Tilt'], inplace=True)
+
+# # Replace NAN values with -999.25
+WCL.fillna(-999.25, inplace=True)
+WCL
 
 # %%
-
-wcl_damage.rename(columns={
+WCL.rename(columns={
     'Depth': 'DEPTH', 
     'Azimuth': 'AZIMUTH', 
     'high_z_tip_theta_deg': 'AZI_END',
@@ -154,7 +158,7 @@ wcl_damage.rename(columns={
 }, inplace=True)
 
 # Make a new dataframe that only contains the columns that were renamed above
-wcl_damage = wcl_damage[[
+GLOG = WCL[[
     'DEPTH', 
     'AZIMUTH', 
     'AZI_END',
@@ -166,20 +170,19 @@ wcl_damage = wcl_damage[[
     'NOTES',
 ]].copy()
 
-# # Replace NAN values with -999.25
-wcl_damage.fillna(-999.25, inplace=True)
 
-wcl_damage.columns
+
+GLOG.columns
 
 
 # %%
 # Add a row at the top of the dataframe with units for each column, then export to CSV
-wcl_damage.loc[-1] = ['m', 'deg', 'deg', 'deg', 'deg', 'm', 'deg', '', '',]
-wcl_damage.index = wcl_damage.index + 1  # shifting index
-wcl_damage = wcl_damage.sort_index()  # sorting by index
+GLOG.loc[-1] = ['m', 'deg', 'deg', 'deg', 'deg', 'm', 'deg', '', '',]
+GLOG.index = GLOG.index + 1  # shifting index
+GLOG = GLOG.sort_index()  # sorting by index
 
-wcl_damage.to_csv(r"WCL_to_GLOG__sticks__result.csv", index=False)
-wcl_damage
+GLOG.to_csv(r"WCL_to_GLOG__sticks__result.csv", index=False)
+GLOG
 
 # %%
 
