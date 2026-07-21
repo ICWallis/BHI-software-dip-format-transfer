@@ -1,0 +1,5 @@
+DEPTH,DEPTH_PLANE,AZIMUTH,DIP,AZI_END,AZI_START,CATEGORY,NOTES,Aperture
+ft,ft,deg,deg,deg,deg,,,mm
+807.417,-999.25,16.97,66.96,-999.25,-999.25,Fracture,no data,0.0
+808.704,-999.25,213.94,26.16,-999.25,-999.25,Bedding,no data,0.0
+809.063,809.184,23.93,71.74,309.0,99.0,Fracture,no data,0.0
