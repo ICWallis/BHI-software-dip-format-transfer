@@ -45,27 +45,36 @@ glog_export
 # %%
 # Process the glog_dips dataframe
 
-# Make a new empty float coloumn called 'WCL_Depth'
-glog_export['WCL_Depth'] = np.nan
-# Make a new empty float column called 'WCL_Feature_Depth'
-glog_export['WCL_Feature_Depth'] = np.nan
+# # Make a new empty float coloumn called 'WCL_Depth'
+# glog_export['WCL_Depth'] = np.nan
+# # Make a new empty float column called 'WCL_Feature_Depth'
+# glog_export['WCL_Feature_Depth'] = np.nan
+
+
+# if glog_export.DEPTH_PLANE is NaN, then fill the NaN values with the glog_export.DEPTH value from the same row
+glog_export = glog_export.fillna({'DEPTH_PLANE': glog_export['DEPTH']})
+glog_export['WCL_Depth'] = glog_export['DEPTH_PLANE']
+
+glog_export
+
+# %%
 
 # Iterate through the rows of the glog_export dataframe
-for index, row in glog_export.iterrows():
-    # If 'DEPTH_PLANE' is NaN, set 'WCL_Depth' to the value in 'DEPTH'
-    if pd.isna(row['AZI_START']):
-        print(f"Row {index} has NaN in 'AZI_START', using 'DEPTH' for WCL_Depth and WCL_Feature_Depth")
-        glog_export.at[index, 'WCL_Depth'] = row['DEPTH']
-        # Set 'WCL_Feature_Depth' to the value in 'DEPTH'
-        glog_export.at[index, 'WCL_Feature_Depth'] = row['DEPTH']
-    else:
-        print(f"Row {index} has value in 'AZI_START', using 'DEPTH_PLANE' for WCL_Depth and 'DEPTH' for WCL_Feature_Depth")
-        # If 'DEPTH_PLANE' is not NaN, set 'WCL_Depth' to the value in 'DEPTH_PLANE'
-        glog_export.at[index, 'WCL_Depth'] = row['DEPTH']
-        # Set 'WCL_Feature_Depth' to the value in 'DEPTH'
-        glog_export.at[index, 'WCL_Feature_Depth'] = row['DEPTH_PLANE']
+# for index, row in glog_export.iterrows():
+#     # If 'DEPTH_PLANE' is NaN, set 'WCL_Depth' to the value in 'DEPTH'
+#     if pd.isna(row['AZI_START']):
+#         print(f"Row {index} has NaN in 'AZI_START', using 'DEPTH' for WCL_Depth and WCL_Feature_Depth")
+#         glog_export.at[index, 'WCL_Depth'] = row['DEPTH']
+#         # Set 'WCL_Feature_Depth' to the value in 'DEPTH'
+#         glog_export.at[index, 'WCL_Feature_Depth'] = row['DEPTH']
+#     else:
+#         print(f"Row {index} has value in 'AZI_START', using 'DEPTH_PLANE' for WCL_Depth and 'DEPTH' for WCL_Feature_Depth")
+#         # If 'DEPTH_PLANE' is not NaN, set 'WCL_Depth' to the value in 'DEPTH_PLANE'
+#         glog_export.at[index, 'WCL_Depth'] = row['DEPTH']
+#         # Set 'WCL_Feature_Depth' to the value in 'DEPTH'
+#         glog_export.at[index, 'WCL_Feature_Depth'] = row['DEPTH_PLANE']
 
-glog_export.head()
+# glog_export.head()
 
 # %%
 # Make a new column called 'AZIMUTH' that is the average of 'AZI_START' and 'AZI_END'
@@ -79,14 +88,14 @@ glog_export['AZI_RANGE'] = glog_export['AZI_RANGE'].replace('nan-nan', ' ')
 
 # Infill depth plane column (half way along partial sinuosids, equivlant to the 'Feature Depth' in WCL)
 # with the depth column values (depth is the midpoint of the entire sinusoid))
-glog_export['DEPTH_PLANE'] = glog_export['DEPTH_PLANE'].fillna(glog_export['DEPTH'])
+# glog_export['DEPTH_PLANE'] = glog_export['DEPTH_PLANE'].fillna(glog_export['DEPTH'])
 
 # Make a dummy Aperture column, if required
 glog_export['APERTURE'] = 0
 
 # Subselect the columns needed for the WCL file
 wcl_dips = glog_export[[
-    'WCL_Feature_Depth', # Feature Depth
+    #'WCL_Feature_Depth', # Feature Depth
     'WCL_Depth', # Depth
     'AZIMUTH', # Azimuth
     'DIP', # Dip
@@ -98,7 +107,7 @@ wcl_dips = glog_export[[
 
 # Rename the columns to match the WCL format (names in the row comments)
 wcl_dips.rename(columns={
-    'WCL_Feature_Depth': 'Feature Depth', # half way down the sinusoid
+    #'WCL_Feature_Depth': 'Feature Depth', # half way down the sinusoid
     'WCL_Depth': 'Depth', # mid point of the entire sinusoid
     'AZIMUTH': 'Azimuth',
     'DIP': 'Dip',
@@ -108,7 +117,17 @@ wcl_dips.rename(columns={
 }, inplace=True)
 
 # Add a row at the top of the dataframe with units [m, m, deg, deg, mm, deg, '']
-wcl_dips.loc[-1] = ['m', 'm', 'deg', 'deg', 'mm', 'deg', '', '']
+wcl_dips.loc[-1] = [
+    #'m', 
+    'm', 
+    'deg', 
+    'deg', 
+    'mm', 
+    'deg', 
+    '', 
+    ''
+    ]
+
 wcl_dips.index = wcl_dips.index + 1  # shifting index
 wcl_dips = wcl_dips.sort_index()  # sorting by index
 
