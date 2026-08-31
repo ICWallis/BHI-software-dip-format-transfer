@@ -5,7 +5,7 @@
 # %%
 # Import required libraries and functions
 import pandas as pd
-import bhi_dip_format_transfer as fn
+import bhi_dip_format_transfer as dt
 
 
 # %%
@@ -29,7 +29,7 @@ GLOG.head()
 
 #%% 
 # Undertake the conversion from GLOG to WCL format
-WCL = fn.glog_to_wcl_sinusoids(GLOG)
+WCL = dt.glog_to_wcl_sinusoids(GLOG)
 WCL.head()
 
 # Output has standard header names for WCL format: 

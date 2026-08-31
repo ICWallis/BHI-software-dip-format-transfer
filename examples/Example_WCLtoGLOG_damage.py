@@ -7,7 +7,7 @@
 # Import required libraries and functions
 import pandas as pd
 import numpy as np
-import bhi_dip_format_transfer as fn
+import bhi_dip_format_transfer as dt
 
 
 # %%
@@ -45,7 +45,7 @@ WCL['Radius'] = np.interp(WCL['Depth'], CALA['Depth'], CALA['CALA'] / 2 / 1000)
 
 # %%
 # Undertake the conversion from WCL to GLOG format
-GLOG = fn.wcl_to_glog_sticks(WCL)
+GLOG = dt.wcl_to_glog_sticks(WCL)
 GLOG.head()
 
 # Output has standard header names for GLOG format: 

@@ -5,7 +5,7 @@
 # %%
 # Import required libraries and functions
 import pandas as pd
-import bhi_dip_format_transfer as fn
+import bhi_dip_format_transfer as dt
 
 
 # %%
@@ -29,7 +29,7 @@ WCL.head()
 
 # %%
 # Example usage for the appended function (original workflow above is unchanged).
-GLOG = fn.wcl_to_glog_sinusoids(WCL)
+GLOG = dt.wcl_to_glog_sinusoids(WCL)
 GLOG.head()
 
 # Output has standard header names for GLOG format: 

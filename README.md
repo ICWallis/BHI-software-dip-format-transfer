@@ -15,12 +15,11 @@ pip install bhi-dip-format-transfer
 ## Usage
 
 ```python
-import bhi_dip_format_transfer as fn
-import pandas as pd
+import bhi_dip_format_transfer as dt
 
-glog = pd.read_csv("geolog_sinusoids.csv")
-wcl = fn.glog_to_wcl_sinusoids(glog)
 ```
+
+Follow the examples given for each format transfer type. Note unit handing and that radius must be in meters. 
 
 Available functions:
 

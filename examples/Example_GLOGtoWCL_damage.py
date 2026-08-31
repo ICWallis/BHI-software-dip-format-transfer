@@ -7,7 +7,7 @@
 # Import required libraries and functions
 import pandas as pd
 import numpy as np
-import bhi_dip_format_transfer as fn
+import bhi_dip_format_transfer as dt
 
 
 # %%
@@ -24,7 +24,7 @@ GLOG = pd.read_csv(
 
 #%% 
 # Undertake the conversion from GLOG to WCL format
-WCL = fn.glog_to_wcl_sticks(GLOG)
+WCL = dt.glog_to_wcl_sticks(GLOG)
 WCL.head()
 
 # Output has standard header names for WCL format: 
