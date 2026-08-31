@@ -1,10 +1,14 @@
 # bhi-dip-format-transfer
 
-Various borehole image (BHI) log software generates outputs and expects imports with different conventions and formats. This package contains methods to improve interoperability between software packages.
+Borehole image (BHI) log software packages generate outputs and expect imports with different conventions and formats. This is a barrier to collaboration and to using existing data in a new software package. Ideally, all BHI software should follow the [SPWLA Dip Exchange Format](https://www.spwla.org/SPWLAArchived/SPWLA/Chapters_SIGs/SIGs/Borehole_Imaging/Borehole_Imaging.aspx). But a single universal standard is a lofty goal and will not resolve issues with legacy data. 
 
-Ideally, all BHI software should follow the [SPWLA Dip Exchange Format](https://www.spwla.org/SPWLAArchived/SPWLA/Chapters_SIGs/SIGs/Borehole_Imaging/Borehole_Imaging.aspx). However, in the author's view the LAS 2.0 format would be more universal than the LAS 3.0 format they recommend.
+The `bhi-dip-format-transfer` package converts the sinusoid (fractures, beds etc.) and stick (drilling-induced damage) format between ALT WellCAD and Aspen Geolog. Get in touch (irene@cubicearth.nz) if you use other software and would like to contribute a conversion method to this project.
 
-The initial focus of this project is on Geolog and WellCAD. Get in touch (irene@cubicearth.nz) if you use other software and would like to contribute to this project.
+
+![Standards](https://imgs.xkcd.com/comics/standards.png)
+
+*([xkcd.com/927](https://xkcd.com/927))*
+
 
 ## Installation
 
@@ -16,19 +20,17 @@ pip install bhi-dip-format-transfer
 
 ```python
 import bhi_dip_format_transfer as dt
-
 ```
 
-Follow the examples given for each format transfer type. Note unit handing and that radius must be in meters. 
+See [examples/](examples/) for complete worked examples with test data, including the required input columns and output conventions for each function. Note unit handling and that CALA must be converted to radius in meters.
 
-Available functions:
+## Available Functions
 
-- `glog_to_wcl_sinusoids` / `wcl_to_glog_sinusoids` — convert dip picks between Geolog and WellCAD sinusoid conventions.
-- `glog_to_wcl_sticks` / `wcl_to_glog_sticks` — convert damage picks (sticks and boxes) between Geolog and WellCAD conventions.
+- `glog_to_wcl_sinusoids` / `wcl_to_glog_sinusoids` — convert dip picks (sinusoids) between Geolog and WellCAD conventions.
+- `glog_to_wcl_sticks` / `wcl_to_glog_sticks` — convert drilling-induced damage picks (sticks and boxes) between Geolog and WellCAD conventions.
 - `process_azimuth_range` — parse a WellCAD "Visible Azimuth Ranges" string into start/end values.
 - `crack_tip_positions` / `apply_crack_tip_calculation` — compute the axial and circumferential position of a tensile crack's tips on a cylinder, used when converting damage picks from WellCAD (which does not record tip positions) to Geolog (which does).
 
-See [examples/](examples/) for complete worked examples with test data, including the required input columns and output conventions for each function.
 
 ## License
 

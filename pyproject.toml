@@ -28,9 +28,9 @@ classifiers = [
 keywords = ["borehole image", "geolog", "wellcad", "dip", "geology", "petrophysics", "well logging"]
 
 [project.urls]
-Homepage = "https://github.com/ICWallis/BHI-software-dip-format-transfer"
-Repository = "https://github.com/ICWallis/BHI-software-dip-format-transfer"
-Issues = "https://github.com/ICWallis/BHI-software-dip-format-transfer/issues"
+Homepage = "https://github.com/ICWallis/BHI-dip-format-transfer"
+Repository = "https://github.com/ICWallis/BHI-dip-format-transfer"
+Issues = "https://github.com/ICWallis/BHI-dip-format-transfer"
 
 [tool.setuptools.packages.find]
 where = ["src"]
