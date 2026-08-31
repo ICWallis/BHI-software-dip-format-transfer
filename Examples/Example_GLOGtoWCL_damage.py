@@ -7,12 +7,12 @@
 # Import required libraries and functions
 import pandas as pd
 import numpy as np
-import Examples.functions as fn
+import functions as fn
 
 
 # %%
 # Import the GLOG damage file that will be converted to WCL format
-geolog_test_file = r"Prototype_GLOG_WCL/test_sticks.csv"
+geolog_test_file = r"TestData_damage_GLOG_format.csv"
 
 GLOG = pd.read_csv(
     geolog_test_file,
@@ -52,7 +52,7 @@ WCL.index = WCL.index + 1  # shifting index
 WCL = WCL.sort_index()  # sorting by index
 
 # Export to a new CSV file
-WCL.to_csv(r"Damage_WCL_format.csv", index=False)
+WCL.to_csv(r"Example_GLOGtoWCL_damage__results.csv", index=False)
 
 WCL.head()
 

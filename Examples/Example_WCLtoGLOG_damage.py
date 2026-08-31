@@ -6,25 +6,25 @@
 # %%
 # Import required libraries and functions
 import pandas as pd
-import Examples.functions as fn
+import functions as fn
 import numpy as np
 
 
 # %%
 # Import the WCL damage file that will be converted to GLOG format
-damage_filename = r"Prototype_GLOG_WCL/GLOG_to_WCL__sticks_result.csv"
+damage_filename = r"TestData_damage_WCL_format.csv"
 
 WCL = pd.read_csv(
     damage_filename,
-    na_values=['', ' ', '-999.25'],
-    skiprows=[1],
+    na_values=['', ' ', '-999.25'], # handles expected NaN values
+    skiprows=[1], # skip unit row, comment out if not present in your file
     )
 
-WCL
+WCL.head()
 
 # %%
 # Import the caliper data
-cala_filename = r"Prototype_GLOG_WCL/test_CALA.csv"
+cala_filename = r"TestData_CALA.csv"
 
 CALA = pd.read_csv(
     cala_filename,
@@ -32,10 +32,15 @@ CALA = pd.read_csv(
     skiprows=[1],
     )
 
-CALA
+CALA.head()
 
 # %%
 # Compute the radius at each depth in the WCL data using linear interpolation 
+
+# Radius **MUST** be in meters for the GLOG conversion function to work correctly.
+# In this case, the caliper data is in mm, so it is divided by 2 (to make a radius) 
+# and then converted to m (/1000).
+
 WCL['Radius'] = np.interp(WCL['Depth'], CALA['Depth'], CALA['CALA'] / 2 / 1000)
 
 # %%
@@ -57,7 +62,7 @@ GLOG.loc[-1] = ['m', 'deg', 'deg', 'deg', 'deg', 'm', 'deg', '', '',] # units ro
 GLOG.index = GLOG.index + 1  # shifting index
 GLOG = GLOG.sort_index()  # sorting by index
 
-GLOG.to_csv(r"Damage_GLOG_format.csv", index=False)
+GLOG.to_csv(r"Example_WCLtoGLOG_damage__results.csv", index=False)
 
 GLOG
 

@@ -5,12 +5,12 @@
 # %%
 # Import required libraries and functions
 import pandas as pd
-import Examples.functions as fn
+import functions as fn
 
 
 # %%
 # Import the GLOG sinusoid file that will be converted to WCL format
-geolog_test_file = r"Prototype_GLOG_WCL\test_sinusoids.csv"
+geolog_test_file = r"TestData_sinusoids_GLOG_format.csv"
 
 GLOG = pd.read_csv(
     geolog_test_file,
@@ -57,7 +57,7 @@ WCL.index = WCL.index + 1  # shifting index
 WCL = WCL.sort_index()  # sorting by index
 
 # Export to a new CSV file called dips.csv
-WCL.to_csv(r"Sinusoids_WCL_format.csv", index=False)
+WCL.to_csv(r"Example_GLOGtoWCL_sinusoids__results.csv", index=False)
 
 WCL.head()
 
