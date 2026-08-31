@@ -99,9 +99,6 @@ def crack_tip_positions(
 # %%
 # Process to GLOG format
 
-# Set WCL.Tilt values of 0 to NaN
-WCL['Tilt'] = WCL['Tilt'].replace(0, np.nan)
-
 # Need to export the caliper log and calculate the radius at the depth of each feature. 
 #WCL['Radius'] = 215.9 / 2 / 1000    # Placeholder value in meters 
                                     # replace with actual radius
@@ -116,7 +113,8 @@ WCL['Radius'] = np.interp(WCL['Depth'], CALA['Depth'], CALA['CALA'] / 2 / 1000)
 # It's CALA in mm / 2 for radius and converted to meters
 # Method assumes meters, so will need to handle units
 
-# Apply the tip azimuth calculation to each row in the dataframe
+
+
 def apply_crack_tip_calculation(row):
     # Test for cases where endpoints are not calculated (e.g., missing Tilt or Length)
     if pd.isna(row['Tilt']) or pd.isna(row['Length']):
@@ -145,6 +143,16 @@ def apply_crack_tip_calculation(row):
             'd_theta_deg': result['d_theta_deg'],
             'dz_m': result['dz_m'],
         })
+
+
+
+
+# Apply the tip azimuth calculation to each row in the dataframe
+
+######### Start of function ###################
+
+# Set WCL.Tilt values of 0 to NaN
+WCL['Tilt'] = WCL['Tilt'].replace(0, np.nan)
 
 tip_columns = [
     'high_z_tip_z_m',
@@ -195,6 +203,8 @@ GLOG = WCL[[
     'NOTES',
 ]].copy()
 
+######### End of function ###################
+
 GLOG.loc[-1] = ['m', 'deg', 'deg', 'deg', 'deg', 'm', 'deg', '', '',] # units row
 
 GLOG.index = GLOG.index + 1  # shifting index
@@ -204,6 +214,17 @@ GLOG = GLOG.sort_index()  # sorting by index
 GLOG.to_csv(r"WCL_to_GLOG__sticks__result.csv", index=False)
 
 GLOG
+
+# %%
+
+
+
+
+# %%
+# Separate use case for the new function (original workflow above is unchanged).
+# WCL is reloaded here because the script above renames its columns in place.
+
+
 
 # %%
 

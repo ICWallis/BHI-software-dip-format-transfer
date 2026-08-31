@@ -1,0 +1,59 @@
+# %%
+# Example of how to use the GLOG to WCL conversion function 
+# for damage (sticks and boxes).
+
+
+# %%
+# Import required libraries and functions
+import pandas as pd
+import numpy as np
+import Examples.functions as fn
+
+
+# %%
+# Import the GLOG damage file that will be converted to WCL format
+geolog_test_file = r"Prototype_GLOG_WCL/test_sticks.csv"
+
+GLOG = pd.read_csv(
+    geolog_test_file,
+    na_values=['', ' ', '-999.25'], # handles expected nan values
+    skiprows=[1], # skips the second row which contains units
+    )
+
+
+
+#%% 
+# Undertake the conversion from GLOG to WCL format
+WCL = fn.glog_to_wcl_sticks(GLOG)
+WCL.head()
+
+# Output has standard header names for WCL format: 
+# 'Depth', 'Azimuth', 'Tilt', 'Length', 'Opening', 'Type', 'NOTES'
+# 'NOTES' is not handled in WCL and must be manually removed before import. 
+
+
+# %%
+# Add the correct units into the top of the dataframe. 
+# The units in this case are [m, deg, deg, m, deg, '', '',] for the columns 
+# ['Depth', 'Azimuth', 'Tilt', 'Length', 'Opening', 'Type', 'NOTES']
+# They may be different in your case.
+
+WCL.loc[-1] = [
+    'm',
+    'deg',
+    'deg',
+    'm',
+    'deg',
+    '',
+    '',
+    ]
+
+WCL.index = WCL.index + 1  # shifting index
+WCL = WCL.sort_index()  # sorting by index
+
+# Export to a new CSV file
+WCL.to_csv(r"Damage_WCL_format.csv", index=False)
+
+WCL.head()
+
+# %%

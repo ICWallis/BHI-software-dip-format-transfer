@@ -5,7 +5,7 @@
 # %%
 # Import required libraries and functions
 import pandas as pd
-import functions as fn
+import Examples.functions as fn
 
 
 # %%
