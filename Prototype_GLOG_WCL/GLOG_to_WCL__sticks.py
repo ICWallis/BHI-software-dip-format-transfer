@@ -21,6 +21,7 @@ glog_export = pd.read_csv(
 print(glog_export.columns)
 glog_export.head()
 
+########## Function starts here ##########
 
 # %%
 # Convert GLOG tilt to WCL tilt convention (opposite direction relative to the borehole axis)
@@ -55,6 +56,9 @@ wcl_damage.rename(columns={
     'AWIDTH': 'Opening',
     'CATEGORY': 'Type',
 }, inplace=True)
+
+
+########## Function ends here ##########
 
 # Add a row at the top of the dataframe with units [m, deg, deg, m, deg, '']
 wcl_damage.loc[-1] = ['m', 'deg', 'deg', 'm', 'deg', '', '']

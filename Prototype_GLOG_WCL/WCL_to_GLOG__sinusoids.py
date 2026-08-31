@@ -72,6 +72,11 @@ def process_azimuth_range(row):
             # 'Azi Range End__second': np.nan
         })
 
+
+# %%
+
+##### start of function #####
+
 WCL[[
     'Azi Range Start', 
     'Azi Range End',
@@ -79,7 +84,6 @@ WCL[[
     # 'Azi Range End__second'
     ]] = WCL['Visible Azimuth Ranges'].apply(process_azimuth_range)
 
-WCL
 
 # %%
 
@@ -134,6 +138,9 @@ GLOG = WCL[[
 # Replace NaN values with -999.25
 GLOG.fillna(-999.25, inplace=True)
 
+####### End of function #######
+
+
 # %%
 
 GLOG.loc[-1] = ['ft', 'ft', 'deg', 'deg', 'deg', 'deg', '',  '', 'mm']
@@ -148,3 +155,9 @@ GLOG
 
 
 # %%
+
+
+
+
+
+
