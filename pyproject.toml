@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bhi-dip-format-transfer"
+version = "0.1.0"
+description = "Convert borehole image (BHI) dip and damage picks between Geolog (GLOG) and WellCAD (WCL) formats."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Irene Wallis", email = "irene@cubicearth.nz" },
+]
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=1.5",
+    "numpy>=1.23",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+keywords = ["borehole image", "geolog", "wellcad", "dip", "geology", "petrophysics", "well logging"]
+
+[project.urls]
+Homepage = "https://github.com/ICWallis/BHI-software-dip-format-transfer"
+Repository = "https://github.com/ICWallis/BHI-software-dip-format-transfer"
+Issues = "https://github.com/ICWallis/BHI-software-dip-format-transfer/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]

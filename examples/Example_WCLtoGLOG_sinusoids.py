@@ -5,7 +5,7 @@
 # %%
 # Import required libraries and functions
 import pandas as pd
-import functions as fn
+import bhi_dip_format_transfer as fn
 
 
 # %%
