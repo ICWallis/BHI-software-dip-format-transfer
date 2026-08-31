@@ -11,9 +11,13 @@ dips_filename = r"WCL_export.csv"
 
 WCL = pd.read_csv(
     dips_filename, 
-    na_values=['', ' ', '-999.25'],
-    skiprows=[1],
+    na_values=['', ' ', '-999.25'], # Handle standard nan values
+    skiprows=[1], # Skip the second row which contains units
     )
+
+# Units are currently handled manually in this method. They are first stripped
+# from the import file and then manually defined and added to the WCL export file. 
+
 WCL.head()
 
 # %%

@@ -2,42 +2,37 @@
 
 # %%
 import pandas as pd
-import numpy as np
 
 
 # %%
-# Export from GLOG that only contains dips (ie no damage picks)
+# Import the GLOG dip file to be converted to WCL format
 geolog_test_file = r"test_sinusoids.csv"
 
-
-# %%
-# Read and check the GLOG export file
-check = pd.read_csv(
-    geolog_test_file,
-    )   
-check.head()
-
-
-# %%
-# Import dip data that was exported from GLOG without header rows and handling NaN values
 GLOG = pd.read_csv(
     geolog_test_file,
-    na_values=['', ' ', '-999.25'],
-    skiprows=[1],
+    na_values=['', ' ', '-999.25'], # handles expected NaN values
+    skiprows=[1], # skip unit row
     )
 GLOG.head()
+
+# Units are currently handled manually in this method. They are first stripped
+# from the import file and then manually defined and added to the WCL export file. 
 
 
 # %%
 # Process GLOG data to WCL conventions and export to csv
 
 # Make a WCL Depth column from GLOG.DEPTH_PLANE and GLOG.DEPTH.
-# If a sinsuoid is partial (has a start and end azimuth), 
+# If a sinsuoid is partial (ie has a start and end azimuth), 
 # then GLOG.DEPTH_PLANE == WCL Depth and GLOG.DEPTH == WCL Feature Depth.
 # If a sinusoid is complete (has no start and end azimuth), 
-# then GLOG.DEPTH_PLANE has no values. 
-# We will only generate WCL Depth for import, so GLOG.DEPTH_PLANE NaN values 
-# are filled with GLOG.DEPTH values for complete sinusoids and this column used as WCL Depth.
+# then GLOG.DEPTH_PLANE has no values amd GLOG.DEPTH == WCL Depth and WCL Feature Depth.
+# In this method, GLOG.DEPTH_PLANE NaN values are filled with GLOG.DEPTH values 
+# when there is complete sinusoids and the infilled column of GLOG.DEPTH_PLANE 
+# is used as WCL Depth. We will only generate WCL Depth for import into WCL because the software will
+# calculate the feature depth depending on CALA.
+
+# Infill GLOG.DEPTH_PLANE with GLOG.DEPTH values where GLOG.DEPTH_PLANE is NaN
 GLOG = GLOG.fillna({'DEPTH_PLANE': GLOG['DEPTH']})
 GLOG
 

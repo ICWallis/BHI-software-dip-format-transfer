@@ -1,4 +1,4 @@
-# convert and damage pick format between geolog and wellcad
+# convert and damage pick format between GeoLog and WellCAD
 
 # %%
 import pandas as pd
@@ -11,24 +11,19 @@ geolog_test_file = r"test_sticks.csv"
 
 glog_export = pd.read_csv(
     geolog_test_file,
-    na_values=['', ' ', '-999.25'],
-    skiprows=[1],
+    na_values=['', ' ', '-999.25'], # handles expected nan values
+    skiprows=[1], # skips the second row which contains units
     )
+
+# Units are currently handled manually in this method. They are first stripped
+# from the import file and then manually defined and added to the WCL export file. 
 
 print(glog_export.columns)
 glog_export.head()
 
-# %%
-# Check the units in the firs row
-unit_check = pd.read_csv(
-    geolog_test_file,
-    )   
-
-unit_check.head(2)
-
 
 # %%
-# Process the glog_damage dataframe
+# Convert GLOG tilt to WCL tilt convention (opposite direction relative to the borehole axis)
 glog_export['WCL_TILT_DEG'] = glog_export['TILT'] * -1
 
 # replace nan values in WCL_TILT_DEG with 0

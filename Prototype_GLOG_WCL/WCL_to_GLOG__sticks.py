@@ -20,6 +20,16 @@ WCL = pd.read_csv(
 
 WCL
 
+# %%
+cala_filename = r"test_CALA.csv"
+
+CALA = pd.read_csv(
+    cala_filename,
+    na_values=['', ' ', '-999.25'],
+    skiprows=[1],
+    )
+
+CALA
 
 # %%
 # Endpoint calculation 
@@ -93,10 +103,18 @@ def crack_tip_positions(
 WCL['Tilt'] = WCL['Tilt'].replace(0, np.nan)
 
 # Need to export the caliper log and calculate the radius at the depth of each feature. 
-WCL['Radius'] = 215.9 / 2 / 1000    # Placeholder value in meters 
+#WCL['Radius'] = 215.9 / 2 / 1000    # Placeholder value in meters 
                                     # replace with actual radius
                                     # It's CALA in mm / 2 for radius and converted to meters
                                     # Method assumes meters, so will need to handle units
+
+# Rather than using a single value for radius (as above), we can 
+# Interpolate the radius from the caliper log at the depth of each feature
+
+WCL['Radius'] = np.interp(WCL['Depth'], CALA['Depth'], CALA['CALA'] / 2 / 1000) 
+
+# It's CALA in mm / 2 for radius and converted to meters
+# Method assumes meters, so will need to handle units
 
 # Apply the tip azimuth calculation to each row in the dataframe
 def apply_crack_tip_calculation(row):
